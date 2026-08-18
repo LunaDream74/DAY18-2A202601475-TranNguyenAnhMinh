@@ -36,7 +36,7 @@ def main():
     # Move reports to reports/
     for f in ["ragas_report.json", "naive_baseline_report.json"]:
         if os.path.exists(f):
-            os.rename(f, f"reports/{f}")
+            os.replace(f, os.path.join("reports", f))
 
     # Step 3: Comparison
     print("\n📌 STEP 3: Comparison")
@@ -63,7 +63,7 @@ def main():
     print(f"\n⏱️  Total time: {elapsed:.1f}s")
     print("\n📋 Next steps:")
     print("  1. Điền analysis/failure_analysis.md")
-    print("  2. Điền analysis/group_report.md")
+    print("  2. Xem lại analysis/individual_report.md")
     print("  3. Viết analysis/reflections/reflection_[Tên].md")
     print("  4. Chạy: python check_lab.py")
 

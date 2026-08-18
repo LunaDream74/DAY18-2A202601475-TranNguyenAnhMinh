@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-"""Production RAG Pipeline — Bài tập NHÓM: ghép M1+M2+M3+M4."""
+"""Production RAG Pipeline: ghép M1, M2, M3, M4 và M5 cho bài tập cá nhân."""
 
 import os, sys, time
 

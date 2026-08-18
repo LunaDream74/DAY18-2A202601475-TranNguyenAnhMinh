@@ -9,6 +9,7 @@ import json
 import os
 import sys
 import subprocess
+import re
 
 
 def check_file(path: str, required: bool = True) -> bool:
@@ -58,17 +59,13 @@ def run_tests() -> tuple[int, int]:
             [sys.executable, "-m", "pytest", "tests/", "-v", "--tb=no", "-q"],
             capture_output=True, text=True, timeout=120,
         )
-        lines = result.stdout.strip().split("\n")
-        summary = lines[-1] if lines else ""
-        # Parse "X passed, Y failed" or "X passed"
-        passed = total = 0
-        for part in summary.split(","):
-            part = part.strip()
-            if "passed" in part:
-                passed = int(part.split()[0])
-                total += passed
-            if "failed" in part:
-                total += int(part.split()[0])
+        # Pytest versions format the summary differently; search the complete
+        # output instead of assuming that the final line contains the counts.
+        passed_matches = re.findall(r"(\d+)\s+passed", result.stdout)
+        failed_matches = re.findall(r"(\d+)\s+failed", result.stdout)
+        passed = int(passed_matches[-1]) if passed_matches else 0
+        failed = int(failed_matches[-1]) if failed_matches else 0
+        total = passed + failed
         return passed, total
     except Exception as e:
         print(f"  ⚠️  pytest error: {e}")
@@ -98,19 +95,23 @@ def validate():
     # 3. Analysis
     print("\n📝 Analysis:")
     check_file("analysis/failure_analysis.md")
-    check_file("analysis/group_report.md")
+    check_file("analysis/individual_report.md")
 
-    # 4. Individual reflections
+    # 4. Individual reflection
     print("\n👤 Individual reflections:")
-    reflections = []
-    ref_dir = "analysis/reflections"
-    if os.path.isdir(ref_dir):
-        reflections = [f for f in os.listdir(ref_dir) if f.startswith("reflection_") and f.endswith(".md")]
+    ref_dir = "analysis"
+    reflections = [
+        f for f in os.listdir(ref_dir)
+        if f.startswith("reflection_")
+        and f.endswith(".md")
+        and "TEMPLATE" not in f.upper()
+    ]
     if reflections:
         for r in reflections:
             print(f"  ✅ {ref_dir}/{r}")
     else:
-        print(f"  ⚠️  Chưa có file reflection cá nhân trong {ref_dir}/")
+        print("  ❌ THIẾU: analysis/reflection_[HọTên].md")
+        errors += 1
 
     # 5. TODO count
     print("\n🔧 TODO markers:")

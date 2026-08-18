@@ -91,10 +91,9 @@ lab18-production-rag/
 │   └── test_m5.py
 │
 ├── analysis/                   # ★ Deliverable
-│   ├── failure_analysis.md     # Phân tích failures (nhóm)
-│   ├── group_report.md         # Báo cáo nhóm
-│   └── reflections/            # Reflection cá nhân
-│       └── reflection_TEMPLATE.md
+│   ├── failure_analysis.md     # Phân tích failures cá nhân
+│   ├── individual_report.md    # Báo cáo cá nhân
+│   └── reflection_TranNguyenAnhMinh.md  # Reflection cá nhân
 │
 ├── reports/                    # ★ Auto-generated (sau khi chạy main.py)
 │   ├── ragas_report.json
@@ -102,7 +101,7 @@ lab18-production-rag/
 │
 └── templates/                  # Templates gốc (backup)
     ├── failure_analysis.md
-    └── group_report.md
+    └── individual_report.md
 ```
 
 ## Timeline
